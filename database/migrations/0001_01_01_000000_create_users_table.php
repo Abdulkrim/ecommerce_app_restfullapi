@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone', 100);
             $table->string('password');
             $table->integer('verifycode')->nullable();
-            $table->tinyInteger('approve')->default(0);
+            $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
