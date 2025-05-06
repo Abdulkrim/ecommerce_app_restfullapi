@@ -13,8 +13,20 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return response()->json(['data' => $users]);
+
+        if ($users->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No users found'
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $users,
+        ]);
     }
+
 
     /**
      * Display the specified resource.
