@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'required|string|max:100|unique:users',
             'password' => 'required|string|min:8',
@@ -24,7 +24,7 @@ class AuthController extends Controller
         $verifyCode = rand(10000, 99999);
 
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->username,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),

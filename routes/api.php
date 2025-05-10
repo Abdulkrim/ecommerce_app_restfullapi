@@ -6,12 +6,14 @@ use App\Http\Controllers\UserController;
 
 Route::prefix('ecommerce_app')->group(function () {
 
+    // =================== Start App =======================
+
     Route::get('/hello',  function (){
         return"hello man";
     });
     
-    // =================== Auth ===================
-    
+    // =================== Auth =======================
+
     Route::prefix('auth')->group(function () {
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/verify-code', [AuthController::class, 'verifyCode']);
