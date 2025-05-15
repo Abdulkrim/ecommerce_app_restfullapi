@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ForgetPasswordController;
 
 
 Route::prefix('ecommerce_app')->group(function () {
@@ -26,4 +27,10 @@ Route::prefix('ecommerce_app')->group(function () {
         Route::apiResource('/users', UserController::class);
     });
 
+    // =================== Forget Passwoed ===================
+    
+    Route::prefix('forget-password')->group(function () {
+        Route::post('/check-email', [ForgetPasswordController::class, 'checkEmail']);
+        Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword']);
+    });
 });
