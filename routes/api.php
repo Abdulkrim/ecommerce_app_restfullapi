@@ -1,18 +1,21 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemController;
 
 
 Route::prefix('ecommerce_app')->group(function () {
 
     // =================== Start App =======================
 
-    Route::get('/hello',  function (){
-        return"hello man";
+    Route::get('/hello',  function () {
+        return "hello man";
     });
-    
+
     // =================== Auth =======================
 
     Route::prefix('auth')->group(function () {
@@ -20,7 +23,7 @@ Route::prefix('ecommerce_app')->group(function () {
         Route::post('/verify-code', [AuthController::class, 'verifyCode']);
         Route::post('/login', [AuthController::class, 'login']);
     });
-    
+
     // =================== User CRUD ===================
 
     Route::middleware('auth:sanctum')->group(function () {
@@ -28,9 +31,16 @@ Route::prefix('ecommerce_app')->group(function () {
     });
 
     // =================== Forget Passwoed ===================
-    
+
     Route::prefix('forget-password')->group(function () {
         Route::post('/check-email', [ForgetPasswordController::class, 'checkEmail']);
         Route::post('/reset-password', [ForgetPasswordController::class, 'resetPassword']);
+    });
+
+    // =================== Categories and Items ===================
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('categories', CategoryController::class);
+        Route::apiResource('items', ItemController::class);
     });
 });
