@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VerifyCodeMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,7 @@ class AuthController extends Controller
         Mail::to($user->email)->send(new VerifyCodeMail($verifyCode));
 
         return response()->json([
-            'status'=> true,
+            'status' => true,
             'message' => 'Verification code sent to your email',
             // 'user' => $user,
         ], 201);
@@ -62,7 +63,7 @@ class AuthController extends Controller
         $user->save();
 
         return response()->json([
-            'status'=> true,
+            'status' => true,
             'message' => 'Account verified successfully',
         ], 200);
     }
@@ -75,24 +76,29 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
-    
+
         $user = User::where('email', $request->email)->first();
-    
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
-    
+
         if (!$user->is_verified) {
             return response()->json(['message' => 'Please verify your account first'], 403);
         }
-    
+
         $token = $user->createToken('auth_token')->plainTextToken;
-    
+
         return response()->json([
-            'status'=> true,
+            'status' => true,
             'message' => 'Login successful',
+            'data' => [
+                'id' => $user->id,
+                'username' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+            ],
             'token' => $token,
         ], 200);
     }
-    
 }
